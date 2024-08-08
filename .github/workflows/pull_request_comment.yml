@@ -1,4 +1,4 @@
-name: "Pull Request Pipeline Trigger"
+name: "Pull Request"
 
 on:
   issue_comment:
@@ -22,17 +22,14 @@ jobs:
         run: |
           echo "running script v2"
 
-      - name: Show GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: Get PR details
-        uses: xt0rted/pull-request-comment-branch@v1
-        id: comment-branch
+      # - name: Show GitHub context
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
+      #   run: echo "$GITHUB_CONTEXT"
       - name: Set commit status as pending
         uses: myrotvorets/set-commit-status-action@master
         with:
-          sha: ${{ steps.comment-branch.outputs.head_sha }}
+          sha: ${{ github.sha }}
           token: ${{ secrets.GITHUB_TOKEN }}
           status: pending
 
@@ -78,6 +75,6 @@ jobs:
         uses: myrotvorets/set-commit-status-action@master
         if: always()
         with:
-          sha: ${{ steps.comment-branch.outputs.head_sha }}
+          sha: ${{ github.sha }}
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
