@@ -4,11 +4,6 @@ on:
   issue_comment:
     types: [created]
 
-permissions:
-  contents: write
-  pull-requests: write
-  repository-projects: write
-
 jobs:
   pull_request:
     name: "Lint and Test"
@@ -16,6 +11,8 @@ jobs:
     runs-on: "ubuntu-latest"
     permissions:
       contents: write
+      pull-requests: write
+      repository-projects: write
     steps:
       - name: Get PR details
         uses: xt0rted/pull-request-comment-branch@v1
