@@ -1,4 +1,4 @@
-name: "Pull Request"
+name: "Pull Request Comment"
 
 on:
   issue_comment:
@@ -31,7 +31,8 @@ jobs:
         with:
           sha: ${{ github.sha }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          status: pending
+          status: pending#
+          context: manual pipeline trigger
 
       - name: "Checkout the repository"
         uses: "actions/checkout@v4.1.7"
@@ -78,3 +79,4 @@ jobs:
           sha: ${{ github.sha }}
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
+          context: manual pipeline trigger
