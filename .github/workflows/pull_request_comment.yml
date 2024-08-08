@@ -15,7 +15,12 @@ jobs:
       repository-projects: write
       actions: write
       checks: write
+      statuses: write
+      issues: write
     steps:
+      - name: "Startup"
+        run: |
+          running script v1
       - name: Get PR details
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
