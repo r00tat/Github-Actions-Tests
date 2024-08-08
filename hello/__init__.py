@@ -1,1 +1,3 @@
 """Hello package."""
+
+hello = "world!"
