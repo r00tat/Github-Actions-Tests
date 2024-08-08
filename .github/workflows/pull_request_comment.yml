@@ -22,7 +22,7 @@ jobs:
         run: |
           echo "running script v2"
       - name: Get PR details
-        uses: xt0rted/pull-request-comment-branch@v1
+        uses: xt0rted/pull-request-comment-branch@v2.0.0
         id: comment-branch
       - name: Show GitHub context
         env:
