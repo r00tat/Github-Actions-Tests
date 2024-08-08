@@ -31,7 +31,7 @@ jobs:
         with:
           sha: ${{ github.sha }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          status: pending#
+          status: pending
           context: manual pipeline trigger
 
       - name: "Checkout the repository"
