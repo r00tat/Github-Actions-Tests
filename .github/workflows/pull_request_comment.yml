@@ -21,11 +21,16 @@ jobs:
       - name: "Startup"
         run: |
           echo "running script v2"
-
-      # - name: Show GitHub context
-      #   env:
-      #     GITHUB_CONTEXT: ${{ toJson(github) }}
-      #   run: echo "$GITHUB_CONTEXT"
+      - name: Get PR details
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
+      - name: Show GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+          HEAD_SHA: ${{ steps.comment-branch.outputs.head_sha }}
+        run: |
+          echo "$GITHUB_CONTEXT"
+          echo "$HEAD_SHA"
       - name: Set commit status as pending
         uses: myrotvorets/set-commit-status-action@master
         with:
