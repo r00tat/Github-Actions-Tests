@@ -1,4 +1,4 @@
-name: 'Pull Request Pipeline Trigger'
+name: "Pull Request Pipeline Trigger"
 
 on:
   issue_comment:
@@ -8,30 +8,45 @@ permissions: {}
 
 jobs:
   pull_request:
-    name: 'Lint and Test'
+    name: "Lint and Test"
     if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/pipeline') && github.event.comment.author_association == 'OWNER' }}
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     permissions:
       contents: write
     steps:
-      - name: 'Checkout the repository'
-        uses: 'actions/checkout@v4.1.7'
-
-      - name: 'Set up Python'
+      - name: GitHub API Request
+        id: request
+        uses: octokit/request-action@v2.0.0
+        with:
+          route: ${{ github.event.issue.pull_request.url }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get PR informations
+        id: pr_data
+        run: |
+          echo "::set-output name=branch::${{ fromJson(steps.request.outputs.data).head.ref }}"
+          echo "::set-output name=repo_name::${{ fromJson(steps.request.outputs.data).base.repo.full_name }}"
+          echo "::set-output name=repo_clone_url::${{ fromJson(steps.request.outputs.data).base.repo.clone_url }}"
+          echo "::set-output name=repo_ssh_url::${{ fromJson(steps.request.outputs.data).base.repo.ssh_url }}"
+      - name: "Checkout the repository"
+        uses: "actions/checkout@v4.1.7"
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ fromJson(steps.request.outputs.data).head.repo.full_name }}
+          ref: ${{ steps.pr_data.outputs.branch }}
+      - name: "Set up Python"
         uses: actions/setup-python@v5.1.1
         with:
-          python-version: '3.12'
-          cache: 'pip'
+          python-version: "3.12"
+          cache: "pip"
 
-      - name: 'Install requirements'
+      - name: "Install requirements"
         run: python3 -m pip install -r requirements.txt
 
-      - name: 'Lint'
+      - name: "Lint"
         run: python3 -m ruff check
 
-      - name: 'Test'
+      - name: "Test"
         run: python3 -m unittest discover -v
-        env:
-          BLAULICHTSMS_CUSTOMERID: '${{ secrets.BLAULICHTSMS_CUSTOMERID }}'
-          BLAULICHTSMS_USERNAME: '${{ secrets.BLAULICHTSMS_USERNAME }}'
-          BLAULICHTSMS_PASSWORD: '${{ secrets.BLAULICHTSMS_PASSWORD }}'
+        env: # Or as an environment variable
+          HELLO: "WORLD"
