@@ -20,7 +20,12 @@ jobs:
     steps:
       - name: "Startup"
         run: |
-          echo "running script v1"
+          echo "running script v2"
+
+      - name: Show GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Get PR details
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
