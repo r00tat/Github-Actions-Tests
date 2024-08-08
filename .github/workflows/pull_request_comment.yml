@@ -34,7 +34,7 @@ jobs:
       - name: Set commit status as pending
         uses: myrotvorets/set-commit-status-action@master
         with:
-          sha: ${{ github.sha }}
+          sha: ${{ steps.comment-branch.outputs.head_sha }}
           token: ${{ secrets.GITHUB_TOKEN }}
           status: pending
           context: manual pipeline trigger
@@ -81,7 +81,7 @@ jobs:
         uses: myrotvorets/set-commit-status-action@master
         if: always()
         with:
-          sha: ${{ github.sha }}
+          sha: ${{ steps.comment-branch.outputs.head_sha }}
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           context: manual pipeline trigger
