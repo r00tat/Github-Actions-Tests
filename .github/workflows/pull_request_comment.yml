@@ -40,14 +40,14 @@ jobs:
           context: manual pipeline trigger
 
       - name: "Checkout the repository"
-        uses: "actions/checkout@v4.2.2"
+        uses: "actions/checkout@v5.0.0"
       # - run: |
       #     gh pr checkout ${{ github.event.issue.number }}
       #     # do your job...
       #   env:
       #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required for gh
       - name: "Set up Python"
-        uses: actions/setup-python@v5.6.0
+        uses: actions/setup-python@v6.0.0
         with:
           python-version: "3.12"
           cache: "pip"
